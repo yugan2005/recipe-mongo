@@ -1,1 +1,1 @@
-[![Actions Status](https://github.com/yugan2005/sfg-recipe-github/workflows/{workflow_name}/badge.svg)](https://github.com/yugan2005/sfg-recipe-github/actions)
+[![Actions Status](https://github.com/yugan2005/sfg-recipe-github/workflows/Java%20CI/badge.svg)](https://github.com/yugan2005/sfg-recipe-github/actions)
