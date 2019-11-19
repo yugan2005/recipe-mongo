@@ -1,0 +1,1 @@
+[![Actions Status](https://xxx.execute-api.us-west-2.amazonaws.com/production/badge/yugan2005/sfg-recipe-github](https://xxx.execute-api.us-west-2.amazonaws.com/production/results/yugan2005/sfg-recipe-github)
