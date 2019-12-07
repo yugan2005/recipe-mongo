@@ -1,20 +1,21 @@
 package guru.springframework.recipe.domain;
 
-import com.tngtech.java.junit.dataprovider.DataProvider;
-import com.tngtech.java.junit.dataprovider.DataProviderRunner;
-import com.tngtech.java.junit.dataprovider.UseDataProvider;
+import com.tngtech.junit.dataprovider.DataProvider;
+import com.tngtech.junit.dataprovider.UseDataProvider;
+import com.tngtech.junit.dataprovider.UseDataProviderExtension;
 import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestTemplate;
+import org.junit.jupiter.api.extension.ExtendWith;
 
-@RunWith(DataProviderRunner.class)
+@ExtendWith(UseDataProviderExtension.class)
 public class CategoryTest {
 
-  Category category;
+  private Category category;
 
-  @Before
-  public void setUp() {
+  @BeforeEach
+  void setUp() {
     category = new Category();
   }
 
@@ -23,19 +24,20 @@ public class CategoryTest {
     return new Object[][]{{4L}, {6L}};
   }
 
-  @Test
+  @TestTemplate
   @UseDataProvider("idProvider")
-  public void testGetId(Long id) {
+  void testGetId(Long id) {
+
     category.setId(id);
 
     Assert.assertEquals(category.getId(), id);
   }
 
   @Test
-  public void testGetDescription() {
+  void testGetDescription() {
   }
 
   @Test
-  public void testGetRecipes() {
+  void testGetRecipes() {
   }
 }

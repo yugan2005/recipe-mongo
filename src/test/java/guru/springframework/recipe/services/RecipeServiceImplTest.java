@@ -5,24 +5,26 @@ import guru.springframework.recipe.domain.Recipe;
 import guru.springframework.recipe.repositories.RecipeRepository;
 import java.util.Optional;
 import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.mockito.Mockito.*;
 
+@ExtendWith(MockitoExtension.class)
+class RecipeServiceImplTest {
 
-public class RecipeServiceImplTest {
-
-  RecipeServiceImpl recipeService;
-  Recipe recipe;
+  private RecipeServiceImpl recipeService;
+  private Recipe recipe;
 
   @Mock
   RecipeRepository recipeRepository;
 
-  @Before
-  public void setUp() {
+  @BeforeEach
+  void setUp() {
     MockitoAnnotations.initMocks(this);
     recipeService = new RecipeServiceImpl(recipeRepository);
     recipe = new Recipe();
@@ -32,7 +34,7 @@ public class RecipeServiceImplTest {
   }
 
   @Test
-  public void testGetRecipes() {
+  void testGetRecipes() {
 
     Assert.assertEquals(recipeService.getRecipes().size(), 1);
     Assert.assertEquals(recipeService.getRecipeById(1L), recipe);
