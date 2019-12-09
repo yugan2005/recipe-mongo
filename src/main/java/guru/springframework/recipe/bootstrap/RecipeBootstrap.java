@@ -14,6 +14,7 @@ import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
+import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
 
 @Slf4j
@@ -32,7 +33,7 @@ public class RecipeBootstrap implements ApplicationListener<ContextRefreshedEven
   }
 
   @Override
-  public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
+  public void onApplicationEvent(@NonNull  ContextRefreshedEvent contextRefreshedEvent) {
 
     try {
       _recipeRepository.saveAll(createRecipes());
@@ -80,7 +81,9 @@ public class RecipeBootstrap implements ApplicationListener<ContextRefreshedEven
             + "\n" + "For a deviled egg version with guacamole, try our Guacamole Deviled Eggs!");
     perfectGuacamole.setNotes(perfectGuacamoleNote);
 
-    Ingredient avocado = new Ingredient("ripe avocado", BigDecimal.valueOf(2), null);
+    Ingredient avocado = new Ingredient("ripe avocado", BigDecimal.valueOf(2),
+        _unitOfMeasureRepository.findByDescription("Count").
+        orElseThrow(RecipeBootstrap::throwDataNotFoundException));
 
     Ingredient kosherSalt = new Ingredient("kosher salt", BigDecimal.valueOf(0.5),
         _unitOfMeasureRepository.findByDescription("Teaspoon")

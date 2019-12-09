@@ -4,7 +4,6 @@ import com.google.common.collect.ImmutableList;
 import guru.springframework.recipe.domain.Recipe;
 import guru.springframework.recipe.repositories.RecipeRepository;
 import java.util.Optional;
-import org.junit.Assert;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -12,6 +11,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -37,14 +37,14 @@ class RecipeServiceImplTest {
   @Test
   void testGetRecipes() {
 
-    Assert.assertEquals(recipeService.getRecipes().size(), 1);
+    assertEquals(recipeService.getRecipes().size(), 1);
     verify(recipeRepository, times(1)).findAll();
   }
 
   @Test
   void testGetRecipeById() {
 
-    Assert.assertEquals(recipeService.getRecipeById(1L), recipe);
+    assertEquals(recipeService.getRecipeById(1L), recipe);
     verify(recipeRepository, times(1)).findById(1L);
     verify(recipeRepository, never()).findAll();
   }

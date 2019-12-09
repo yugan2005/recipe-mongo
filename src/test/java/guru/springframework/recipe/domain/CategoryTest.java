@@ -3,11 +3,13 @@ package guru.springframework.recipe.domain;
 import com.tngtech.junit.dataprovider.DataProvider;
 import com.tngtech.junit.dataprovider.UseDataProvider;
 import com.tngtech.junit.dataprovider.UseDataProviderExtension;
-import org.junit.Assert;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestTemplate;
 import org.junit.jupiter.api.extension.ExtendWith;
+
+import static org.junit.jupiter.api.Assertions.*;
+
 
 @ExtendWith(UseDataProviderExtension.class)
 public class CategoryTest {
@@ -30,7 +32,7 @@ public class CategoryTest {
 
     category.setId(id);
 
-    Assert.assertEquals(category.getId(), id);
+    assertEquals(category.getId(), id);
   }
 
   @Test

@@ -4,7 +4,6 @@ import com.google.common.collect.ImmutableSet;
 import guru.springframework.recipe.domain.Recipe;
 import guru.springframework.recipe.services.RecipeService;
 import java.util.Set;
-import org.junit.Assert;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -17,6 +16,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.ui.Model;
 
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -56,10 +56,10 @@ class IndexControllerTest {
 
   @Test
   void testIndex() {
-    Assert.assertEquals(_indexController.index(_model), "index");
+    assertEquals(_indexController.index(_model), "index");
     verify(_model, times(1)).addAttribute(eq("recipes"), recipeSetArgumentCaptor.capture());
     verify(_recipeService, times(1)).getRecipes();
 
-    Assert.assertEquals(recipeSetArgumentCaptor.getValue().size(), 2);
+    assertEquals(recipeSetArgumentCaptor.getValue().size(), 2);
   }
 }
