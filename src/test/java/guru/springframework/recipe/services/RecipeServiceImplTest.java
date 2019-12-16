@@ -19,6 +19,7 @@ class RecipeServiceImplTest {
 
 
   private Recipe recipe;
+  private Long recipeId;
 
   @Mock
   RecipeRepository recipeRepository;
@@ -29,8 +30,9 @@ class RecipeServiceImplTest {
   @BeforeEach
   void setUp() {
     recipe = new Recipe();
+    recipeId = 1L;
     lenient().when(recipeRepository.findAll()).thenReturn(ImmutableList.of(recipe));
-    lenient().when(recipeRepository.findById(1L)).thenReturn(Optional.of(recipe));
+    lenient().when(recipeRepository.findById(recipeId)).thenReturn(Optional.of(recipe));
 
   }
 
@@ -44,8 +46,15 @@ class RecipeServiceImplTest {
   @Test
   void testGetRecipeById() {
 
-    assertEquals(recipeService.getRecipeById(1L), recipe);
-    verify(recipeRepository, times(1)).findById(1L);
+    assertEquals(recipeService.getRecipeById(recipeId), recipe);
+    verify(recipeRepository, times(1)).findById(recipeId);
     verify(recipeRepository, never()).findAll();
+  }
+
+  @Test
+  void testDeleteRecipeById() {
+    recipeService.deleteRecipeById(recipeId);
+    verify(recipeRepository, times(1)).deleteById(recipeId);
+
   }
 }
