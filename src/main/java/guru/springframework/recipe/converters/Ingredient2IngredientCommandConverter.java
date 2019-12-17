@@ -33,6 +33,11 @@ public class Ingredient2IngredientCommandConverter implements Converter<Ingredie
     ingredientCommand.setAmount(source.getAmount());
     ingredientCommand.setDescription(source.getDescription());
     ingredientCommand.setId(source.getId());
+
+    if (source.getRecipe() != null) {
+      ingredientCommand.setRecipeId(source.getRecipe().getId());
+    }
+
     return ingredientCommand;
   }
 }
