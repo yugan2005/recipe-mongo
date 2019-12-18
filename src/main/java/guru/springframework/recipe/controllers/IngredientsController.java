@@ -31,10 +31,9 @@ public class IngredientsController {
     return "/recipe/ingredient/list";
   }
 
-  @RequestMapping("/{recipeId}/ingredient/{ingredientId}/show")
-  public String showIngredient(@PathVariable String recipeId, @PathVariable String ingredientId, Model model) {
-    IngredientCommand ingredientCommand =
-        _ingredientService.findByRecipeIdAndIngredientId(Long.valueOf(recipeId), Long.valueOf(ingredientId));
+  @RequestMapping("/ingredient/{ingredientId}/show")
+  public String showIngredient(@PathVariable String ingredientId, Model model) {
+    IngredientCommand ingredientCommand = _ingredientService.findIngredientCommandById(Long.valueOf(ingredientId));
     model.addAttribute("ingredientCommand", ingredientCommand);
     return "/recipe/ingredient/show";
   }

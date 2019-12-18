@@ -64,9 +64,9 @@ class IngredientsControllerTest {
     IngredientCommand ingredientCommand = new IngredientCommand();
     ingredientCommand.setId(ingredientId);
 
-    when(_ingredientService.findByRecipeIdAndIngredientId(recipeId, ingredientId)).thenReturn(ingredientCommand);
+    when(_ingredientService.findIngredientCommandById(ingredientId)).thenReturn(ingredientCommand);
 
-    _mockMvc.perform(get("/recipe/" + recipeId + "/ingredient/" + ingredientId + "/show")).
+    _mockMvc.perform(get("/recipe/ingredient/" + ingredientId + "/show")).
         andExpect(status().isOk()).
         andExpect(view().name("/recipe/ingredient/show")).
         andExpect(model().attributeExists("ingredientCommand")).

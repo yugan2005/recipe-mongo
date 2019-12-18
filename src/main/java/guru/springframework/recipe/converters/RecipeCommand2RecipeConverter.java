@@ -2,7 +2,6 @@ package guru.springframework.recipe.converters;
 
 import guru.springframework.recipe.commandobjs.RecipeCommand;
 import guru.springframework.recipe.domain.Recipe;
-import java.util.stream.Collectors;
 import lombok.Synchronized;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.lang.Nullable;
@@ -41,11 +40,13 @@ public class RecipeCommand2RecipeConverter implements Converter<RecipeCommand, R
     recipe.setServings(source.getServings());
     recipe.setDescription(source.getDescription());
     //noinspection Duplicates
-    recipe.setCategories(source.getCategories().stream().
-        map(categoryCommand2CategoryConverter::convert).collect(Collectors.toSet()));
+    source.getCategories().stream().
+        map(categoryCommand2CategoryConverter::convert).
+        forEach(recipe::addCategory);
     //noinspection Duplicates
-    recipe.setIngredients(source.getIngredients().stream().
-        map(ingredientCommand2IngredientConverter::convert).collect(Collectors.toSet()));
+    source.getIngredients().stream().
+        map(ingredientCommand2IngredientConverter::convert).
+        forEach(recipe::addIngredient);
     recipe.setDirections(source.getDirections());
     recipe.setUrl(source.getUrl());
     recipe.setSource(source.getSource());

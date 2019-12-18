@@ -1,11 +1,11 @@
 package guru.springframework.recipe.services;
 
-import com.google.common.collect.ImmutableSet;
 import guru.springframework.recipe.commandobjs.IngredientCommand;
 import guru.springframework.recipe.converters.Ingredient2IngredientCommandConverter;
 import guru.springframework.recipe.domain.Ingredient;
 import guru.springframework.recipe.domain.Recipe;
-import java.util.Set;
+import guru.springframework.recipe.repositories.IngredientRepository;
+import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -22,6 +22,9 @@ class IngredientServiceImplTest {
 
   @Mock
   RecipeService _recipeService;
+
+  @Mock
+  IngredientRepository _ingredientRepository;
 
   @Mock
   Ingredient2IngredientCommandConverter _ingredient2IngredientCommandConverter;
@@ -45,10 +48,10 @@ class IngredientServiceImplTest {
     Ingredient ingredient9 = new Ingredient();
     ingredient9.setId(ingredientId);
 
-    Set<Ingredient> ingredients = ImmutableSet.of(ingredient1, ingredient9);
-    recipe.setIngredients(ingredients);
+    recipe.addIngredient(ingredient1);
+    recipe.addIngredient(ingredient9);
 
-    when(_recipeService.getRecipeById(recipeId)).thenReturn(recipe);
+    when(_ingredientRepository.findById(ingredientId)).thenReturn(Optional.of(ingredient9));
 
     IngredientCommand ingredientCommand = new IngredientCommand();
     ingredientCommand.setId(ingredient9.getId());
@@ -57,11 +60,12 @@ class IngredientServiceImplTest {
   }
 
   @Test
-  void findByRecipeIdAndIngredientId() {
-    IngredientCommand ingredientCommand = _ingredientService.findByRecipeIdAndIngredientId(recipeId, ingredientId);
+  void findIngredientCommandById() {
+    IngredientCommand ingredientCommand = _ingredientService.findIngredientCommandById(ingredientId);
 
     assertEquals(ingredientCommand.getId(), ingredientId);
     verify(_ingredient2IngredientCommandConverter, times(1)).convert(any(Ingredient.class));
-    verify(_recipeService, times(1)).getRecipeById(recipeId);
+    verifyNoInteractions(_recipeService);
+    verify(_ingredientRepository, times(1)).findById(ingredientId);
   }
 }

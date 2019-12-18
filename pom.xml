@@ -75,6 +75,13 @@
       <artifactId>webjars-locator</artifactId>
       <version>0.38</version>
     </dependency>
+
+    <!--Resolve Warning from org.springframework.lang.Nullable https://stackoverflow.com/a/58002092/4229125 -->
+    <dependency>
+      <groupId>com.google.code.findbugs</groupId>
+      <artifactId>jsr305</artifactId>
+      <version>3.0.2</version>
+    </dependency>
   </dependencies>
 
   <build>

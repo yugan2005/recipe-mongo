@@ -1,5 +1,6 @@
 package guru.springframework.recipe.domain;
 
+import com.google.common.collect.ImmutableSet;
 import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.CascadeType;
@@ -15,7 +16,10 @@ import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.validation.constraints.NotNull;
+import lombok.AccessLevel;
 import lombok.Data;
+import lombok.Setter;
 
 
 @Data
@@ -42,12 +46,14 @@ public class Recipe {
   @OneToOne(cascade = CascadeType.ALL)
   private Notes notes;
 
-  @OneToMany(cascade = CascadeType.ALL, mappedBy = "recipe")
-  private Set<Ingredient> ingredients = new HashSet<>();
-
   @Enumerated(EnumType.STRING)
   private Difficulity difficulity;
 
+  @Setter(AccessLevel.NONE)
+  @OneToMany(cascade = CascadeType.ALL, mappedBy = "recipe")
+  private Set<Ingredient> ingredients = new HashSet<>();
+
+  @Setter(AccessLevel.NONE)
   @ManyToMany
   @JoinTable(name = "recipe_category", joinColumns = @JoinColumn(name = "recipe_id"), inverseJoinColumns = @JoinColumn(name = "category_id"))
   private Set<Category> categories = new HashSet<>();
@@ -57,13 +63,41 @@ public class Recipe {
     notes.setRecipe(this);
   }
 
+  public Set<Ingredient> getIngredients() {
+    return ImmutableSet.copyOf(ingredients);
+  }
+
   public void addIngredient(Ingredient ingredient) {
-    this.getIngredients().add(ingredient);
+    if (ingredient.getId() != null) {
+      removeIngredientById(ingredient.getId());
+    }
+    ingredients.add(ingredient);
     ingredient.setRecipe(this);
   }
 
+  public void removeIngredient(Ingredient ingredient) {
+    ingredients.remove(ingredient);
+  }
+
+  public void removeIngredientById(@NotNull Long ingredientId) {
+    ingredients.removeIf(ingredient -> ingredientId.equals(ingredient.getId()));
+  }
+
+  public Set<Category> getCategories() {
+    return ImmutableSet.copyOf(categories);
+  }
+
   public void addCategory(Category category) {
-    this.getCategories().add(category);
-    category.getRecipes().add(this);
+    removeCategoryById(category.getId());
+    categories.add(category);
+    category.addRecipe(this);
+  }
+
+  public void removeCategory(Category category) {
+    categories.remove(category);
+  }
+
+  public void removeCategoryById(@NotNull Long categoryId) {
+    categories.removeIf(category -> categoryId.equals(category.getId()));
   }
 }
