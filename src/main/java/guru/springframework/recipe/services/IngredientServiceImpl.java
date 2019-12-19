@@ -8,6 +8,7 @@ import guru.springframework.recipe.domain.Recipe;
 import guru.springframework.recipe.repositories.IngredientRepository;
 import javax.validation.constraints.NotNull;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 
 @Service
@@ -46,20 +47,11 @@ public class IngredientServiceImpl implements IngredientService {
   }
 
   @Override
+  @Transactional
   public Ingredient saveIngredient(@NotNull Ingredient ingredient) {
     Recipe recipe = _recipeService.getRecipeById(ingredient.getRecipe().getId());
-    Ingredient savedIngredient = recipe.getIngredients()
-        .stream()
-        .filter(ing -> ing.getId().equals(ingredient.getId()))
-        .findFirst()
-        .orElse(ingredient);
-
-    savedIngredient.setRecipe(recipe);
-    savedIngredient.setAmount(ingredient.getAmount());
-    savedIngredient.setDescription(ingredient.getDescription());
-    savedIngredient.setUnitOfMeasure(ingredient.getUnitOfMeasure());
-
-    savedIngredient = _ingredientRepository.save(savedIngredient);
+    ingredient.setRecipe(recipe);
+    Ingredient savedIngredient = _ingredientRepository.save(ingredient);
     recipe.addIngredient(savedIngredient);
 
     return savedIngredient;
