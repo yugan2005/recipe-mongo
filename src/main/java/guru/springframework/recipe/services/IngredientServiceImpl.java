@@ -29,9 +29,14 @@ public class IngredientServiceImpl implements IngredientService {
   }
 
   @Override
-  public IngredientCommand findIngredientCommandById(long ingredientId) {
+  public IngredientCommand findIngredientCommandById(Long ingredientId) {
     return _ingredientRepository.findById(ingredientId).
         map(_ingredient2IngredientCommandConverter::convert).orElse(null);
+  }
+
+  @Override
+  public Ingredient findIngredientById(Long ingredientId) {
+    return _ingredientRepository.findById(ingredientId).orElse(null);
   }
 
   @Override
@@ -55,5 +60,16 @@ public class IngredientServiceImpl implements IngredientService {
     recipe.addIngredient(savedIngredient);
 
     return savedIngredient;
+  }
+
+  @Transactional
+  @Override
+  public void removeIngredient(Ingredient ingredient) {
+    if (ingredient.getRecipe() != null) {
+      Recipe recipe = ingredient.getRecipe();
+      recipe.removeIngredient(ingredient);
+    }
+    ingredient.setRecipe(null);
+    _ingredientRepository.delete(ingredient);
   }
 }

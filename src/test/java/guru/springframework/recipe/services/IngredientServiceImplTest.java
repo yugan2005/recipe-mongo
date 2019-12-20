@@ -138,4 +138,13 @@ class IngredientServiceImplTest {
         getDescription(), description);
     assertEquals(recipe.getIngredients().size(), 3);
   }
+
+  @Test
+  void removeIngredient() {
+    assertTrue(recipe.getIngredients().contains(ingredient9));
+    assertEquals(ingredient9.getRecipe(), recipe);
+    _ingredientService.removeIngredient(ingredient9);
+    assertFalse(recipe.getIngredients().contains(ingredient9));
+    assertNull(ingredient9.getRecipe());
+  }
 }

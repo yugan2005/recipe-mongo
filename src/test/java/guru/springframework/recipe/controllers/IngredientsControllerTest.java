@@ -4,6 +4,8 @@ import com.google.common.collect.Lists;
 import guru.springframework.recipe.commandobjs.IngredientCommand;
 import guru.springframework.recipe.commandobjs.RecipeCommand;
 import guru.springframework.recipe.commandobjs.UnitOfMeasureCommand;
+import guru.springframework.recipe.domain.Ingredient;
+import guru.springframework.recipe.domain.Recipe;
 import guru.springframework.recipe.services.IngredientService;
 import guru.springframework.recipe.services.RecipeService;
 import guru.springframework.recipe.services.UnitOfMeasureService;
@@ -159,5 +161,25 @@ class IngredientsControllerTest {
         andExpect(model().attribute("ingredientCommand", hasProperty("id", nullValue()))).
         andExpect(model().attribute("ingredientCommand", hasProperty("recipeId", equalTo(recipeId)))).
         andExpect(model().attribute("unitOfMeasureCommands", hasSize(2)));
+  }
+
+  @Test
+  void delete() throws Exception {
+    Long ingredientId = 31L;
+    Ingredient ingredient = new Ingredient();
+    ingredient.setId(ingredientId);
+    Recipe recipe = new Recipe();
+    recipe.setId(recipeId);
+    recipe.addIngredient(ingredient);
+    ingredient.setRecipe(recipe);
+
+    when(_ingredientService.findIngredientById(ingredientId)).thenReturn(ingredient);
+
+    _mockMvc.perform(get("/recipe/ingredient/{ingredientId}/delete", ingredientId)).
+        andExpect(status().is3xxRedirection()).
+        andExpect(view().name("redirect:/recipe/" + recipeId + "/ingredients"));
+
+    verify(_ingredientService, times(1)).findIngredientById(ingredientId);
+    verify(_ingredientService, times(1)).removeIngredient(ingredient);
   }
 }
