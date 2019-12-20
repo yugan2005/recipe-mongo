@@ -141,4 +141,23 @@ class IngredientsControllerTest {
     assertEquals(ingredientCom.getUnitOfMeasure().getId(),
         ingredientCommandArgumentCaptor.getValue().getUnitOfMeasure().getId());
   }
+
+  @Test
+  void createIngredient() throws Exception {
+    IngredientCommand ingredientCommand = new IngredientCommand();
+    ingredientCommand.setUnitOfMeasure(new UnitOfMeasureCommand());
+    ingredientCommand.setRecipeId(recipeId);
+
+    when(_unitOfMeasureService.getUnitOfMeasureCommands()).
+        thenReturn(Lists.newArrayList(new UnitOfMeasureCommand(), new UnitOfMeasureCommand()));
+
+    _mockMvc.perform(get("/recipe/{recipeId}/ingredient/new", recipeId)).
+        andExpect(status().isOk()).
+        andExpect(view().name("/recipe/ingredient/ingredientForm")).
+        andExpect(model().attributeExists("ingredientCommand")).
+        andExpect(model().attributeExists("unitOfMeasureCommands")).
+        andExpect(model().attribute("ingredientCommand", hasProperty("id", nullValue()))).
+        andExpect(model().attribute("ingredientCommand", hasProperty("recipeId", equalTo(recipeId)))).
+        andExpect(model().attribute("unitOfMeasureCommands", hasSize(2)));
+  }
 }

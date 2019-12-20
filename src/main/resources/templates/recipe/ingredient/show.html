@@ -23,7 +23,17 @@
     <div class="col-md-6 col-md-offset-3">
       <div class="panel panel-primary">
         <div class="panel-heading">
-          <h1 class="panel-title">Ingredient</h1>
+          <div class="row">
+            <div class="col-md-10">
+              <h1 class="panel-title">Ingredient</h1>
+            </div>
+            <div class="col-md-2">
+              <a href="#" class="btn btn-default btn-sm" role="button"
+                 th:href="@{'/recipe/' + ${ingredientCommand.recipeId} + '/ingredients'}">
+                All Ingredients
+              </a>
+            </div>
+          </div>
         </div>
         <div class="panel-body">
           <div class="table-responsive">

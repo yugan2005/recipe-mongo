@@ -56,6 +56,23 @@ public class IngredientsController {
     return "/recipe/ingredient/ingredientForm";
   }
 
+  @RequestMapping("/{recipeId}/ingredient/new")
+  public String createIngredient(@PathVariable String recipeId, Model model) {
+    // Note that we are going to use the same ingredientForm, we need provide Ids for the hidden text
+    // Also, in ingredientForm we are calling ingredientCommand.unitOfMeasure.id
+
+    IngredientCommand ingredientCommand = new IngredientCommand();
+    ingredientCommand.setRecipeId(Long.valueOf(recipeId));
+    ingredientCommand.setUnitOfMeasure(new UnitOfMeasureCommand());
+
+    List<UnitOfMeasureCommand> unitOfMeasureCommands = _unitOfMeasureService.getUnitOfMeasureCommands();
+
+    model.addAttribute("ingredientCommand", ingredientCommand);
+    model.addAttribute("unitOfMeasureCommands", unitOfMeasureCommands);
+
+    return "/recipe/ingredient/ingredientForm";
+  }
+
   @RequestMapping(value = "/ingredient", method = RequestMethod.POST)
   public String createOrUpdate(@ModelAttribute IngredientCommand ingredientCommand) {
     IngredientCommand savedIngredientCommand = _ingredientService.saveIngredientCommand(ingredientCommand);
