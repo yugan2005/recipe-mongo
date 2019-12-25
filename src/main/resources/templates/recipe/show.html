@@ -23,20 +23,32 @@
       <div class="panel-group">
         <div class="panel panel-primary">
           <div class="panel-heading">
-            <h1 class="panel-title" th:text="${recipe.description}">Recipe Description Here!</h1>
+            <div class="row">
+              <div class="col-md-10">
+                <h1 class="panel-title" th:text="${recipe.description}">Recipe Description Here!</h1>
+              </div>
+              <div class="col-md-2">
+                <a class="btn btn-default btn-sm" style="float: right" href="#"
+                   th:href="@{'/recipe/' + ${recipe.id} + '/image'}" role="button">Upload Image</a>
+              </div>
+            </div>
           </div>
           <div class="panel-body">
             <div class="row">
               <div class="col-md-3">
                 <h5>Categories:</h5>
               </div>
-              <div class="col-md-9">
+              <div class="col-md-3">
                 <ul>
                   <li th:remove="all">cat one</li>
                   <li th:remove="all">cat two</li>
                   <li th:each="category : ${recipe.categories}"
                       th:text="${category.description}">cat three</li>
                 </ul>
+              </div>
+              <div class="col-md-6">
+                <img src="../../static/resources/images/guacamole400x400WithX.jpg"
+                     th:src="@{'/recipe/' + ${recipe.id} + '/image/show'}" width="200" height="200">
               </div>
             </div>
             <div class="row">

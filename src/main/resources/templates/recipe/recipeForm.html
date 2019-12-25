@@ -33,9 +33,20 @@
             <div class="panel-body">
               <!--row1: description-->
               <div class="row">
-                <div class="col-md-12 form-group">
+                <div class="col-md-8 form-group">
                   <label>Recipe Description:</label>
-                  <input type="text" class="form-control" th:field="*{description}">
+                  <textarea class="form-control" th:field="*{description}" rows="10"></textarea>
+                </div>
+                <div class="col-md-4" align="center">
+                  <div class="row">
+                    <img src="../../static/resources/images/guacamole400x400WithX.jpg"
+                         th:src="@{'/recipe/' + ${recipeCommand.id} + '/image/show'}"
+                         width="200" height="200"/>
+                  </div>
+                  <div class="row">
+                    <a href="#" role="button" class="btn btn-default btn-sm" style="margin-top: 5px"
+                       th:href="@{'/recipe/' + ${recipeCommand.id} + '/image'}">Change Image</a>
+                  </div>
                 </div>
               </div>
               <!--row2: categories-->
@@ -152,7 +163,8 @@
             </div>
           </div>
           <button type="submit" class="btn btn-primary pull-right"
-                  style="margin-top: 8px; margin-bottom: 20px">Submit</button>
+                  style="margin-top: 8px; margin-bottom: 20px">Submit
+          </button>
         </div>
       </form>
     </div>

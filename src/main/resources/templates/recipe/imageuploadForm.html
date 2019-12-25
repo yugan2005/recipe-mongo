@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Upload Image</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+        integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"
+        th:href="@{/webjars/bootstrap/css/bootstrap.min.css}">
+
+  <script
+      src="https://code.jquery.com/jquery-1.11.1.min.js"
+      crossorigin="anonymous" th:src="@{/webjars/jquery/jquery.min.js}"></script>
+
+  <!-- Latest compiled and minified JavaScript -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+          integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+          crossorigin="anonymous" th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+
+</head>
+<body>
+<div class="container-fluid" style="margin-top: 20px">
+  <div class="row">
+    <div class="col-md-6 col-md-offset-3">
+      <div class="panel-group">
+        <div class="panel-primary">
+          <div class="panel-heading">
+            <h1 class="panel-title">Upload a new recipe image</h1>
+          </div>
+          <div class="panel-body">
+            <!--/*@thymesVar id="recipeCommand" type="guru.springframework.recipe.commandobjs.RecipeCommand"*/-->
+            <form action="#" method="post" enctype="multipart/form-data"
+                  th:action="@{'/recipe/' + ${recipeCommand.id} + '/image'}">
+              <div class="row">
+                <label class="control-label">Select File</label>
+                <input name="imageFile" type="file"/>
+              </div>
+              <div class="row" style="margin-top: 20px">
+                <button type="submit" class="btn btn-primary">Submit</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>
