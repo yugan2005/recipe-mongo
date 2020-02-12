@@ -4,6 +4,7 @@ import guru.springframework.recipe.commandobjs.RecipeCommand;
 import guru.springframework.recipe.converters.Recipe2RecipeCommandConverter;
 import guru.springframework.recipe.converters.RecipeCommand2RecipeConverter;
 import guru.springframework.recipe.domain.Recipe;
+import guru.springframework.recipe.exceptions.NotFoundException;
 import guru.springframework.recipe.repositories.RecipeRepository;
 import guru.springframework.recipe.services.RecipeService;
 import guru.springframework.recipe.services.RecipeServiceImpl;
@@ -157,5 +158,15 @@ class RecipeControllerTest {
         andExpect(view().name("redirect:/"));
 
     verify(recipeRepository, times(1)).deleteById(recipeId);
+  }
+
+  @Test
+  void testGetRecipeNotFound() throws Exception {
+    long notFoundId = 13L;
+    when(recipeRepository.findById(notFoundId)).thenThrow(NotFoundException.class);
+
+    _mockMvc.perform(get("/recipe/" + notFoundId + "/show")).
+        andExpect(status().isNotFound()).
+        andExpect(view().name("404error"));
   }
 }

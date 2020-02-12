@@ -1,14 +1,18 @@
 package guru.springframework.recipe.controllers;
 
 import guru.springframework.recipe.commandobjs.RecipeCommand;
+import guru.springframework.recipe.exceptions.NotFoundException;
 import guru.springframework.recipe.services.RecipeService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 
 @Slf4j
@@ -59,5 +63,13 @@ public class RecipeController {
   public String delete(@PathVariable String id) {
     _recipeService.deleteRecipeById(Long.valueOf(id));
     return "redirect:/";
+  }
+
+  @ResponseStatus(HttpStatus.NOT_FOUND)
+  @ExceptionHandler(value = NotFoundException.class)
+  public String handle404NotFoundException(Exception ex, Model model) {
+    log.info("Handling 404 Not Found Exception");
+    model.addAttribute("exception", ex);
+    return "404error";
   }
 }

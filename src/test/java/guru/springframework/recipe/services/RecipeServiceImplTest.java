@@ -2,6 +2,7 @@ package guru.springframework.recipe.services;
 
 import com.google.common.collect.ImmutableList;
 import guru.springframework.recipe.domain.Recipe;
+import guru.springframework.recipe.exceptions.NotFoundException;
 import guru.springframework.recipe.repositories.RecipeRepository;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
@@ -55,6 +56,11 @@ class RecipeServiceImplTest {
   void testDeleteRecipeById() {
     recipeService.deleteRecipeById(recipeId);
     verify(recipeRepository, times(1)).deleteById(recipeId);
+  }
 
+  @Test
+  void testIdNotFoundExceptionThrow() {
+    when(recipeRepository.findById(2L)).thenReturn(Optional.empty());
+    assertThrows(NotFoundException.class, () -> recipeService.getRecipeById(2L));
   }
 }
