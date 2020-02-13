@@ -1,18 +1,16 @@
 package guru.springframework.recipe.controllers;
 
 import guru.springframework.recipe.commandobjs.RecipeCommand;
-import guru.springframework.recipe.exceptions.NotFoundException;
 import guru.springframework.recipe.services.RecipeService;
+import javax.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseStatus;
 
 
 @Slf4j
@@ -20,6 +18,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @RequestMapping("/recipe")
 public class RecipeController {
 
+  private static final String RECIPE_FORM = "recipe/recipeForm";
   private final RecipeService _recipeService;
 
   public RecipeController(RecipeService recipeService) {
@@ -37,7 +36,13 @@ public class RecipeController {
 
   // called after the form's submit button clicked
   @RequestMapping(value = "", method = RequestMethod.POST)
-  public String saveOrUpdate(@ModelAttribute RecipeCommand recipeCommand) {
+  public String saveOrUpdate(@Valid @ModelAttribute RecipeCommand recipeCommand, BindingResult result) {
+
+    if (result.hasErrors()) {
+      result.getAllErrors().forEach(error -> log.info(error.toString()));
+      return RECIPE_FORM;
+    }
+
     RecipeCommand savedRecipeCommand = _recipeService.saveRecipeCommand(recipeCommand);
 
     // redirect which will ended up calling method showRecipe above
@@ -49,7 +54,7 @@ public class RecipeController {
   public String newRecipe(Model model) {
     model.addAttribute("recipeCommand", new RecipeCommand());
 
-    return "recipe/recipeForm";
+    return RECIPE_FORM;
   }
 
   @RequestMapping("/{id}/update")
@@ -65,11 +70,4 @@ public class RecipeController {
     return "redirect:/";
   }
 
-  @ResponseStatus(HttpStatus.NOT_FOUND)
-  @ExceptionHandler(value = NotFoundException.class)
-  public String handle404NotFoundException(Exception ex, Model model) {
-    log.info("Handling 404 Not Found Exception");
-    model.addAttribute("exception", ex);
-    return "404error";
-  }
 }

@@ -4,6 +4,7 @@ import guru.springframework.recipe.commandobjs.RecipeCommand;
 import guru.springframework.recipe.converters.Recipe2RecipeCommandConverter;
 import guru.springframework.recipe.converters.RecipeCommand2RecipeConverter;
 import guru.springframework.recipe.domain.Recipe;
+import guru.springframework.recipe.exceptions.ControllerExceptionHandler;
 import guru.springframework.recipe.exceptions.NotFoundException;
 import guru.springframework.recipe.repositories.RecipeRepository;
 import guru.springframework.recipe.services.RecipeService;
@@ -51,7 +52,9 @@ class RecipeControllerTest {
     RecipeService recipeService =
         new RecipeServiceImpl(recipeRepository, _recipeCommand2RecipeConverter, _recipe2RecipeCommandConverter);
     RecipeController recipeController = new RecipeController(recipeService);
-    _mockMvc = MockMvcBuilders.standaloneSetup(recipeController).build();
+    _mockMvc = MockMvcBuilders.standaloneSetup(recipeController).
+        setControllerAdvice(ControllerExceptionHandler.class).
+        build();
 
     recipeId = 7L;
     recipeDescription = "mock recipe recipeCommand description";
@@ -110,7 +113,8 @@ class RecipeControllerTest {
     _mockMvc.perform(post("/recipe").
         contentType(MediaType.APPLICATION_FORM_URLENCODED).
         param("id", String.valueOf(recipeId)).
-        param("description", recipeDescription)).
+        param("description", recipeDescription).
+        param("directions", "not empty direction")).
         andExpect(status().is3xxRedirection()).
         andExpect(view().name("redirect:/recipe/" + recipeId + "/show"));
 
@@ -168,5 +172,21 @@ class RecipeControllerTest {
     _mockMvc.perform(get("/recipe/" + notFoundId + "/show")).
         andExpect(status().isNotFound()).
         andExpect(view().name("404error"));
+  }
+
+  @Test
+  void testNumberFormatException() throws Exception {
+    _mockMvc.perform(get("/recipe/abc/show")).
+        andExpect(status().isBadRequest()).
+        andExpect(view().name("400error"));
+  }
+
+  @Test
+  void testPostValidationFail() throws Exception {
+    _mockMvc.perform(post("/recipe").
+        contentType(MediaType.APPLICATION_FORM_URLENCODED).
+        param("cookTime", "0")).
+        andExpect(model().attributeHasFieldErrorCode("recipeCommand", "cookTime", "Min")).
+        andExpect(model().attributeHasFieldErrorCode("recipeCommand", "description", "NotBlank"));
   }
 }
