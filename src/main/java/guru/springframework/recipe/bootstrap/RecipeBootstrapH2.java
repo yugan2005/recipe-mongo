@@ -13,19 +13,21 @@ import java.math.BigDecimal;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationListener;
+import org.springframework.context.annotation.Profile;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
 
 @Slf4j
 @Component
-public class RecipeBootstrap implements ApplicationListener<ContextRefreshedEvent> {
+@Profile("default")
+public class RecipeBootstrapH2 implements ApplicationListener<ContextRefreshedEvent> {
 
   private final RecipeRepository _recipeRepository;
   private final UnitOfMeasureRepository _unitOfMeasureRepository;
   private final CategoryRepository _categoryRepository;
 
-  public RecipeBootstrap(RecipeRepository recipeRepository, UnitOfMeasureRepository unitOfMeasureRepository,
+  public RecipeBootstrapH2(RecipeRepository recipeRepository, UnitOfMeasureRepository unitOfMeasureRepository,
       CategoryRepository categoryRepository) {
     _recipeRepository = recipeRepository;
     _unitOfMeasureRepository = unitOfMeasureRepository;
@@ -83,19 +85,22 @@ public class RecipeBootstrap implements ApplicationListener<ContextRefreshedEven
 
     Ingredient avocado = new Ingredient("ripe avocado", BigDecimal.valueOf(2),
         _unitOfMeasureRepository.findByDescription("Count").
-        orElseThrow(RecipeBootstrap::throwDataNotFoundException));
+            orElseThrow(RecipeBootstrapH2::throwDataNotFoundException));
 
     Ingredient kosherSalt = new Ingredient("kosher salt", BigDecimal.valueOf(0.5),
         _unitOfMeasureRepository.findByDescription("Teaspoon")
-        .orElseThrow(RecipeBootstrap::throwDataNotFoundException));
+            .orElseThrow(RecipeBootstrapH2::throwDataNotFoundException));
 
     perfectGuacamole.addIngredient(avocado);
     perfectGuacamole.addIngredient(kosherSalt);
     perfectGuacamole.setDifficulity(Difficulity.EASY);
 
-    Category mexican = _categoryRepository.findByDescription("Mexican").orElseThrow(RecipeBootstrap::throwDataNotFoundException);
-    Category american = _categoryRepository.findByDescription("American").orElseThrow(RecipeBootstrap::throwDataNotFoundException);
-    Category chinese = _categoryRepository.findByDescription("Chinese").orElseThrow(RecipeBootstrap::throwDataNotFoundException);
+    Category mexican =
+        _categoryRepository.findByDescription("Mexican").orElseThrow(RecipeBootstrapH2::throwDataNotFoundException);
+    Category american =
+        _categoryRepository.findByDescription("American").orElseThrow(RecipeBootstrapH2::throwDataNotFoundException);
+    Category chinese =
+        _categoryRepository.findByDescription("Chinese").orElseThrow(RecipeBootstrapH2::throwDataNotFoundException);
 
     perfectGuacamole.addCategory(mexican);
     perfectGuacamole.addCategory(american);
@@ -128,12 +133,12 @@ public class RecipeBootstrap implements ApplicationListener<ContextRefreshedEven
 
     Ingredient oregano = new Ingredient("dried oregano", BigDecimal.valueOf(1),
         _unitOfMeasureRepository.findByDescription("Teaspoon")
-            .orElseThrow(RecipeBootstrap::throwDataNotFoundException));
+            .orElseThrow(RecipeBootstrapH2::throwDataNotFoundException));
     grilledChicken.addIngredient(oregano);
 
     Ingredient sugar = new Ingredient("sugar", BigDecimal.valueOf(1),
         _unitOfMeasureRepository.findByDescription("Tablespoon")
-            .orElseThrow(RecipeBootstrap::throwDataNotFoundException));
+            .orElseThrow(RecipeBootstrapH2::throwDataNotFoundException));
     grilledChicken.addIngredient(sugar);
 
     grilledChicken.addCategory(chinese);
