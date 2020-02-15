@@ -20,7 +20,7 @@ jobs:
     - name: Upload coverage to Codecov
       uses: codecov/codecov-action@v1
       with:
-        token: 6e3fe2f4-d280-409e-b836-47cb5c7ef589
+        token: ${{ secrets.CODECOV_KEY }}
         file: ./target/site/jacoco/*
         fail_ci_if_error: true
     - name: Build with Maven
