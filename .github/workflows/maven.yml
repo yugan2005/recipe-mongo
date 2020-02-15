@@ -21,7 +21,7 @@ jobs:
       uses: codecov/codecov-action@v1
       with:
         token: 6e3fe2f4-d280-409e-b836-47cb5c7ef589
-        file: ./target/site/cobertura
+        file: ./target/site/cobertura/*
         fail_ci_if_error: true
     - name: Build with Maven
       run: mvn -B package --file pom.xml
