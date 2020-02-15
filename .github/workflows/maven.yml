@@ -22,8 +22,6 @@ jobs:
       with:
         token: 6e3fe2f4-d280-409e-b836-47cb5c7ef589
         fail_ci_if_error: true
-    - name: send to CodeCov
-      run: bash <(curl -s https://codecov.io/bash) -t
     - name: Build with Maven
       run: mvn -B package --file pom.xml
 
