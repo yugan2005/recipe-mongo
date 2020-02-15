@@ -21,7 +21,6 @@ jobs:
       uses: codecov/codecov-action@v1
       with:
         token: 6e3fe2f4-d280-409e-b836-47cb5c7ef589
-        file: ./sfg-recipe-github/target/site/cobertura/coverage.xml
         fail_ci_if_error: true
     - name: send to CodeCov
       run: bash <(curl -s https://codecov.io/bash) -t
