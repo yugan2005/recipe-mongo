@@ -15,5 +15,9 @@ jobs:
         java-version: 1.8
     - name: Verify with Maven
       run: mvn verify
+    - name: test and generate code coverage
+      run: mvn integration-test cobertura:cobertura
+    - name: send to CodeCov
+      run: - bash <(curl -s https://codecov.io/bash) -t 6e3fe2f4-d280-409e-b836-47cb5c7ef589
     - name: Build with Maven
       run: mvn -B package --file pom.xml

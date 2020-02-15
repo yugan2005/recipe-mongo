@@ -1,1 +1,2 @@
 [![Actions Status](https://github.com/yugan2005/sfg-recipe-github/workflows/Java%20CI/badge.svg)](https://github.com/yugan2005/sfg-recipe-github/actions)
+[![codecov](https://codecov.io/gh/yugan2005/sfg-recipe-github/branch/master/graph/badge.svg)](https://codecov.io/gh/yugan2005/sfg-recipe-github)
